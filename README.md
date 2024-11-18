@@ -1,1 +1,4 @@
-# TaxiSim_FP
+# TaxiSimulator_FinalProject
+Componentes del Proyecto:
+- Ulises Díez Santaolalla
+- Ignacio Felices Vera
