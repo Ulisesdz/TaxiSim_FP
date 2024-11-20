@@ -15,14 +15,21 @@ public class UserManager : MonoBehaviour
 
     public void CreateUser()
     {
-        // Método público para crear el usuario
+        // Si ya hay un usuario creado y no ha sido entregado al destino, no se crea uno nuevo
         if (userInstance != null)
         {
-            Debug.LogWarning("El usuario ya ha sido generado.");
+            Debug.LogWarning("Ya hay un usuario en curso. No se puede crear uno nuevo.");
             return;
         }
 
+        // Crear el nuevo usuario
         userInstance = CreateUserOnSpline();
+
+        // Notificar al CarManager que el usuario ha sido generado
+        if (userInstance != null)
+        {
+            Debug.Log("Nuevo usuario generado. Notificar al marcador.");
+        }
     }
 
     private GameObject CreateUserOnSpline()
@@ -72,5 +79,16 @@ public class UserManager : MonoBehaviour
     public GameObject GetUserInstance()
     {
         return userInstance; // Devuelve correctamente el usuario generado
+    }
+
+    // Método para eliminar al usuario una vez haya llegado al destino
+    public void RemoveUser()
+    {
+        if (userInstance != null)
+        {
+            Destroy(userInstance);
+            userInstance = null; // Restablecer la referencia
+            Debug.Log("Usuario destruido después de ser entregado.");
+        }
     }
 }

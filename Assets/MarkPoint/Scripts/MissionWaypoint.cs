@@ -10,14 +10,10 @@ public class MissionWaypoint : MonoBehaviour
     public float escalaIcono = 0.5f;   // Escala del marcador
     public float alturaExtra = 5f;     // Altura adicional
 
-    public UserManager userManager;    // Referencia al UserManager
     private Transform target;          // Objetivo dinámico
 
     private void Start()
     {
-        // Asegurarse de que el marcador no sea visible al inicio
-        SetWaypointVisibility(false);
-
         offset.y += alturaExtra;
         SetupTextAlignment();
         AjustarEscalaIcono();
@@ -25,29 +21,12 @@ public class MissionWaypoint : MonoBehaviour
 
     private void Update()
     {
-        if (target == null)
-        {
-            // Intentar obtener el target dinámicamente
-            if (userManager != null)
-            {
-                GameObject user = userManager.GetUserInstance();
-                if (user != null)
-                {
-                    target = user.transform;
-                    Debug.Log("Waypoint configurado para apuntar al User generado.");
-
-                    // Hacer visible el marcador
-                    SetWaypointVisibility(true);
-                }
-            }
-
-            // Si aún no hay un target, detener aquí
-            if (target == null) return;
-        }
+        if (target == null) return;
 
         // Convertir posición 3D a coordenadas de pantalla
         Vector2 pos = Camera.main.WorldToScreenPoint(target.position + offset);
 
+        // Limitar la posición dentro de los bordes de la pantalla
         RectTransform iconRectTransform = img.GetComponent<RectTransform>();
         float iconWidth = iconRectTransform.rect.width * escalaIcono;
         float iconHeight = iconRectTransform.rect.height * escalaIcono;
@@ -57,23 +36,37 @@ public class MissionWaypoint : MonoBehaviour
         float minY = iconHeight / 2 + 25;
         float maxY = Screen.height - minY;
 
+        // Comprobar si el objetivo está detrás del taxi
         if (Vector3.Dot((target.position - transform.position), transform.forward) < 0)
         {
-            pos.x = pos.x < Screen.width / 2 ? maxX : minX + 25;
+            // Si el objetivo está detrás del taxi, colocamos el marcador en el lado opuesto
+            if (pos.x < Screen.width / 2)
+            {
+                pos.x = maxX; // Si está detrás y a la izquierda, lo movemos a la derecha
+            }
+            else
+            {
+                pos.x = minX; // Si está detrás y a la derecha, lo movemos a la izquierda
+            }
+        }
+        else
+        {
+            // Si está al frente del taxi, lo mostramos normalmente
+            pos.x = Mathf.Clamp(pos.x, minX, maxX);
+            pos.y = Mathf.Clamp(pos.y, minY, maxY);
         }
 
-        pos.x = Mathf.Clamp(pos.x, minX, maxX);
-        pos.y = Mathf.Clamp(pos.y, minY, maxY);
-
+        // Actualizamos la posición del marcador en la pantalla
         img.transform.position = pos;
 
+        // Mostrar la distancia en metros
         meter.text = ((int)Vector3.Distance(target.position, transform.position)).ToString() + "m";
     }
 
-    private void SetWaypointVisibility(bool visible)
+    public void SetTarget(Transform newTarget)
     {
-        img.gameObject.SetActive(visible);
-        meter.gameObject.SetActive(visible);
+        target = newTarget;
+        Debug.Log($"Nuevo objetivo establecido: {newTarget?.name}");
     }
 
     private void SetupTextAlignment()
@@ -93,4 +86,10 @@ public class MissionWaypoint : MonoBehaviour
         RectTransform meterRectTransform = meter.GetComponent<RectTransform>();
         meterRectTransform.localScale = new Vector3(escalaIcono, escalaIcono, escalaIcono);
     }
+
+    public Transform GetTarget()
+    {
+        return target;
+    }
 }
+
