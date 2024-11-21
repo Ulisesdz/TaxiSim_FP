@@ -23,7 +23,9 @@ public class CarManager : MonoBehaviour
 
     private int points = 0; // Puntos acumulados
 
-    private bool hasCollided = false; // Para asegurarnos de que solo se resten puntos una vez
+    private bool canCollide = true; // Indica si el coche puede detectar colisiones
+    private float collisionCooldown = 2f; // Tiempo de espera entre colisiones
+    private float collisionTimer = 0f; // Temporizador para manejar el cooldown
 
     void Start()
     {
@@ -187,9 +189,19 @@ public class CarManager : MonoBehaviour
         // Permitir la creación de un nuevo cliente después de la espera
         if (isWaitingForNewPassenger && userManager.GetUserInstance() == null)
         {
-            // Aquí es donde podrías permitir al usuario crear un nuevo cliente
             Debug.Log("Esperando un nuevo cliente...");
             isWaitingForNewPassenger = false;
+        }
+
+        // Manejo del cooldown de colisiones
+        if (!canCollide)
+        {
+            collisionTimer += Time.deltaTime;
+            if (collisionTimer >= collisionCooldown)
+            {
+                collisionTimer = 0f;
+                canCollide = true; // Permitimos detectar colisiones nuevamente
+            }
         }
     }
 
@@ -235,25 +247,18 @@ public class CarManager : MonoBehaviour
     // Detectar colisiones
     private void OnCollisionEnter(Collision collision)
     {
-        // Verificar si el coche ha chocado con algo
-        if (!hasCollided)
+        if (canCollide)
         {
             // Restar puntos por colisión
             points -= 50;
             Debug.Log("¡Colisión! Se restan 50 puntos.");
 
-            // Asegurarse de que solo se resten puntos una vez por colisión
-            hasCollided = true;
-
             // Actualizar el texto de los puntos
             UpdatePointsDisplay();
+
+            // Iniciar el cooldown
+            canCollide = false;
         }
     }
-
-    // Reiniciar el estado de colisión después de un tiempo (si es necesario)
-    private void OnCollisionExit(Collision collision)
-    {
-        // Cuando el coche deja de estar en colisión, puedes restablecer la bandera
-        hasCollided = false;
-    }
 }
+

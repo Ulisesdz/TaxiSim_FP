@@ -4,7 +4,7 @@ public class CarPhysics : MonoBehaviour
 {
     public float velocidad = 10f;  // Velocidad de aceleración
     public float giro = 50f;  // Velocidad de giro
-    public float velocidadMaxima = 20f;  // Límite de velocidad máxima
+    public float velocidadMaxima = 80f;  // Límite de velocidad máxima
     private Rigidbody rb;
 
     // Variables para controlar la aceleración y la rotación suave
