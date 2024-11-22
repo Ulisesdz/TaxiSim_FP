@@ -1,45 +1,139 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-public class CarPhysics : MonoBehaviour
+public class CarController : MonoBehaviour
 {
-    public float velocidad = 10f;  // Velocidad de aceleración
-    public float giro = 50f;  // Velocidad de giro
-    public float velocidadMaxima = 80f;  // Límite de velocidad máxima
-    private Rigidbody rb;
+    public enum ControlMode
+    {
+        Keyboard,
+        Buttons
+    };
 
-    // Variables para controlar la aceleración y la rotación suave
-    public float aceleracionSmooth = 0.1f;
-    public float rotacionSmooth = 0.1f;
-    private float velocidadActual = 0f;
-    private float rotacionActual = 0f;
+    public enum Axel
+    {
+        Front,
+        Rear
+    }
+
+    [Serializable]
+    public struct Wheel
+    {
+        public GameObject wheelModel;
+        public WheelCollider wheelCollider;
+        public GameObject wheelEffectObj;
+        public Axel axel;
+    }
+
+    public ControlMode control;
+
+    public float maxAcceleration = 30.0f;
+    public float brakeAcceleration = 50.0f;
+
+    public float turnSensitivity = 1.0f;
+    public float maxSteerAngle = 30.0f;
+
+    public Vector3 _centerOfMass;
+
+    public List<Wheel> wheels;
+
+    float moveInput;
+    float steerInput;
+
+    private Rigidbody carRb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        carRb = GetComponent<Rigidbody>();
+        carRb.centerOfMass = _centerOfMass;
     }
 
     void Update()
     {
-        // Obtén los valores de entrada
-        float inputMovimiento = Input.GetAxis("Vertical");
-        float inputRotacion = Input.GetAxis("Horizontal");
+        GetInputs();
+        AnimateWheels();
+        WheelEffects();
+    }
 
-        // Suavizar la aceleración del coche
-        velocidadActual = Mathf.Lerp(velocidadActual, inputMovimiento * velocidad, aceleracionSmooth);
+    void LateUpdate()
+    {
+        Move();
+        Steer();
+        Brake();
+    }
 
-        // Limitar la velocidad máxima
-        Vector3 velocidadDeseada = transform.forward * velocidadActual;
-        velocidadDeseada = Vector3.ClampMagnitude(velocidadDeseada, velocidadMaxima);  // Limitar la velocidad máxima
+    void GetInputs()
+    {
+        if (control == ControlMode.Keyboard)
+        {
+            moveInput = Input.GetAxis("Vertical");
+            steerInput = Input.GetAxis("Horizontal");
+        }
+    }
 
-        // Establecer la velocidad del Rigidbody
-        rb.velocity = new Vector3(velocidadDeseada.x, rb.velocity.y, velocidadDeseada.z);  // Mantener la componente y intacta para la física
+    void Move()
+    {
+        foreach (var wheel in wheels)
+        {
+            wheel.wheelCollider.motorTorque = moveInput * 600 * maxAcceleration * Time.deltaTime;
+        }
+    }
 
-        // Suavizar la rotación del coche
-        rotacionActual = Mathf.Lerp(rotacionActual, inputRotacion * giro, rotacionSmooth);
+    void Steer()
+    {
+        foreach (var wheel in wheels)
+        {
+            if (wheel.axel == Axel.Front)
+            {
+                float targetSteerAngle = steerInput * maxSteerAngle;
+                wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, targetSteerAngle, turnSensitivity * Time.deltaTime);
+            }
+        }
+    }
+    void AnimateWheels()
+    {
+        foreach (var wheel in wheels)
+        {
+            Quaternion rot;
+            Vector3 pos;
+            wheel.wheelCollider.GetWorldPose(out pos, out rot);
+            wheel.wheelModel.transform.position = pos;
+            wheel.wheelModel.transform.rotation = rot;
+        }
+    }
 
-        // Aplicar rotación
-        float rotacionFinal = rotacionActual * Time.deltaTime;
-        Quaternion rotacionDeseada = Quaternion.Euler(0f, rotacionFinal, 0f);
-        rb.MoveRotation(rb.rotation * rotacionDeseada);
+    void Brake()
+    {
+        if (Input.GetKey(KeyCode.Space) || moveInput == 0)
+        {
+            foreach (var wheel in wheels)
+            {
+                wheel.wheelCollider.brakeTorque = 300 * brakeAcceleration * Time.deltaTime;
+            }
+        }
+        else
+        {
+            foreach (var wheel in wheels)
+            {
+                wheel.wheelCollider.brakeTorque = 0;
+            }
+        }
+    }
+
+    void WheelEffects()
+    {
+        foreach (var wheel in wheels)
+        {
+            //var dirtParticleMainSettings = wheel.smokeParticle.main;
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = true;
+            }
+            else
+            {
+                wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = false;
+            }
+        }
     }
 }
