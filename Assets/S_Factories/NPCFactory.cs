@@ -56,13 +56,6 @@ public abstract class NPCFactory : MonoBehaviour
         {
             animator.runtimeAnimatorController = movementAnimatorController;
         }
-        // Verificar y agregar un Rigidbody al NPC
-        var rigidbody = npc.GetComponent<Rigidbody>();
-        if (rigidbody == null)
-        {
-            rigidbody = npc.AddComponent<Rigidbody>();
-            rigidbody.isKinematic = true; // Establecer como cinemático para evitar conflictos con el SplineFollower
-        }
 
         // Verificar y agregar un Collider al NPC
         var collider = npc.GetComponent<Collider>();
