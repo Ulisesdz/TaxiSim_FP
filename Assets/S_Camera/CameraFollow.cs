@@ -14,6 +14,14 @@ public class CameraFollow : MonoBehaviour
         // Inicializa el offset con la altura y distancia deseada detrás del coche
         offset = new Vector3(0, altura, -distancia);
     }
+    void FixedUpdate()
+    {
+        if (objetivo == null) return;
+
+        Vector3 posicionDeseada = objetivo.position + objetivo.rotation * offset;
+        transform.position = Vector3.Lerp(transform.position, posicionDeseada, suavizado);
+        transform.LookAt(objetivo.position + Vector3.up * 1.5f);
+    }
 
     void LateUpdate()
     {

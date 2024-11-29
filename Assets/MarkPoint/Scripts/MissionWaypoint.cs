@@ -61,6 +61,8 @@ public class MissionWaypoint : MonoBehaviour
 
         // Mostrar la distancia en metros
         meter.text = ((int)Vector3.Distance(target.position, transform.position)).ToString() + "m";
+        Debug.Log($"Waypoint apunta a las coordenadas del target: {target.position}");
+        Debug.Log($"Waypoint apunta a las coordenadas del target: {transform.position}");
     }
 
     public void SetTarget(Transform newTarget)
