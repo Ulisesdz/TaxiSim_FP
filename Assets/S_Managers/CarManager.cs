@@ -99,8 +99,8 @@ public class CarManager : MonoBehaviour
                     }
                     else
                     {
-                        // Restar puntos si no llegamos a tiempo
-                        pointsManager.SubtractPoints(100);
+                        // Sumar menos puntos si no llegamos a tiempo
+                        pointsManager.AddPoints(100);
                         Debug.Log("¡No llegaste a tiempo! Puntos restados.");
                     }
 

@@ -27,6 +27,11 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Highway_scene");
     }
 
+    public void CarSelectionn()
+    {
+        SceneManager.LoadScene("CarSelection_scene");
+    }
+
     public void QuitGame()
     {
         Application.Quit();
