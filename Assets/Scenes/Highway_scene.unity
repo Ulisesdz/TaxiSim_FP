@@ -51805,6 +51805,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7747779765286423926, guid: 2428e7e466b559e43a0e4202eae899ff, type: 3}
   m_PrefabInstance: {fileID: 629816197}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &630602281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 630602283}
+  - component: {fileID: 630602282}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &630602282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630602281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959d62c56fdc5bf4ca7e52f93e464794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSound: {fileID: 8300000, guid: 9b1a92abb1069dd4d9f0607f447600f0, type: 3}
+  crashSound: {fileID: 8300000, guid: ea2f5f128d973524c82dbb616f0b95f3, type: 3}
+  photoSound: {fileID: 8300000, guid: d812e93f21f12ac438c68353878f42f5, type: 3}
+  driftSound: {fileID: 8300000, guid: 5e109e69de5f44044b95ca10003c4c28, type: 3}
+--- !u!4 &630602283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630602281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -452.3936, y: -917.963, z: -476.05762}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &632515054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -73837,6 +73885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsManager: {fileID: 270474293}
+  musicManager: {fileID: 0}
 --- !u!114 &877201701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187805,3 +187854,4 @@ SceneRoots:
   - {fileID: 1655880227}
   - {fileID: 695798236}
   - {fileID: 723743495}
+  - {fileID: 630602283}

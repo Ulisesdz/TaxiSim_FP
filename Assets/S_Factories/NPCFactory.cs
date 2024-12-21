@@ -18,6 +18,17 @@ public abstract class NPCFactory : MonoBehaviour
         // Asignamos la escala deseada (1.5 en los tres ejes)
         npc.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
+        // Asigno el RigidBody
+        Rigidbody rb = npc.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = npc.AddComponent<Rigidbody>();
+        }
+        rb.mass = 1000f;
+        rb.drag = 1f;
+        rb.angularDrag = 1f;
+        rb.centerOfMass = new Vector3(0, -2, 0);
+
         // Verificamos si el NPC tiene el componente SplineFollower
         var follower = npc.GetComponent<SplineFollower>();
         if (follower == null)

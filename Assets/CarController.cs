@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CarController : MonoBehaviour
 {
+    public MusicManager musicManager;
     public enum ControlMode
     {
         Keyboard,
@@ -135,6 +136,7 @@ public class CarController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space))
             {
+                musicManager.Drift();
                 wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = true;
             }
             else

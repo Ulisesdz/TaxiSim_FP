@@ -910,6 +910,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2010512258}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: PlayCrashSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &446759449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3055,6 +3067,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1847217796}
   m_CullTransparentMesh: 1
+--- !u!1 &2010512257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2010512259}
+  - component: {fileID: 2010512258}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2010512258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010512257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959d62c56fdc5bf4ca7e52f93e464794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSound: {fileID: 8300000, guid: 7a84ef8e9cf6caf4a8c81c336de311d7, type: 3}
+  crashSound: {fileID: 8300000, guid: a198997b8e8713e4cac1d21b67c2fb7f, type: 3}
+  photoSound: {fileID: 8300000, guid: a198997b8e8713e4cac1d21b67c2fb7f, type: 3}
+  driftSound: {fileID: 8300000, guid: a198997b8e8713e4cac1d21b67c2fb7f, type: 3}
+--- !u!4 &2010512259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010512257}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -452.3936, y: -917.963, z: -476.05762}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2144179722
 GameObject:
   m_ObjectHideFlags: 0
@@ -12317,6 +12377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d9937b05598034cbfdba4081429bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicManager: {fileID: 0}
   control: 0
   maxAcceleration: 30
   brakeAcceleration: 50
@@ -15911,3 +15972,4 @@ SceneRoots:
   - {fileID: 865983409}
   - {fileID: 572389219}
   - {fileID: 734473452}
+  - {fileID: 2010512259}

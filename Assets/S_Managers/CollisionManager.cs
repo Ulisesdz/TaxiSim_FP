@@ -6,6 +6,7 @@ public class CollisionManager : MonoBehaviour
     private bool canCollide = true;      // Si las colisiones están habilitadas
     private float collisionCooldown = 2f; // Tiempo entre colisiones
     private float collisionTimer = 0f;   // Temporizador para el cooldown
+    public MusicManager musicManager; // Music Manager
 
     void Update()
     {
@@ -28,6 +29,7 @@ public class CollisionManager : MonoBehaviour
         {
             // Restar puntos por colisión
             pointsManager.SubtractPoints(50);
+            musicManager.PlayCrashSound();
             Debug.Log("¡Colisión! Se restan 50 puntos.");
 
             // Actualizar los puntos en pantalla

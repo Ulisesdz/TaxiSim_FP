@@ -8,6 +8,7 @@ public class PenaltyManager : MonoBehaviour
     public GameObject restoreLivesPanel; // Panel para ofrecer restaurar vidas
     public PointsManager pointsManager; // Referencia al gestor de puntos
     public CarController carController; // Referencia al CarController
+    public MusicManager musicManager; // Music Manager
     private int penalties = 0;          // Contador global de infracciones
 
     void Start()
@@ -27,6 +28,7 @@ public class PenaltyManager : MonoBehaviour
         {
             penaltyImages[penalties].gameObject.SetActive(false); // Oculta la imagen correspondiente
             penalties++; // Incrementa el contador de infracciones
+            musicManager.PlayPhotoSound();
         }
 
         // Si todas las vidas se pierden, mostrar la oferta de restaurar
