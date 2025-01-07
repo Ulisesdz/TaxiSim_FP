@@ -57,6 +57,9 @@ public class CarSelection : MonoBehaviour
 
     public void Jugar()
     {
+        PlayerPrefs.SetInt("carIndex", carIndex);
+        PlayerPrefs.Save();
+
         SceneManager.LoadScene("Game_scene");
     }
 
