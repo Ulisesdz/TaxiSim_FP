@@ -57,6 +57,9 @@ public class CarSelection : MonoBehaviour
 
     public void Jugar()
     {
+        PlayerPrefs.SetInt("SelectedCar", carIndex); // Use consistent key
+        PlayerPrefs.Save();
+
         SceneManager.LoadScene("Game_scene");
     }
 
@@ -69,9 +72,6 @@ public class CarSelection : MonoBehaviour
             cars_list[i].SetActive(false);
         }
         cars_list[carIndex].SetActive(true);
-
-        PlayerPrefs.SetInt("carIndex", carIndex);
-        PlayerPrefs.Save();
 
         UpdateCarPriceUI();
     }
@@ -97,9 +97,13 @@ public class CarSelection : MonoBehaviour
         {
             // Deduct points and save purchase
             carPointsManager.SubtractPoints(carPrice);
-
             carPointsManager.UpdatePointsDisplay();
-            Debug.Log($"Car purchased! Remaining points: {currentPoints - carPrice}");
+
+            // Save purchased car index and set it as the selected car
+            PlayerPrefs.SetInt("SelectedCar", carIndex);
+            PlayerPrefs.Save();
+
+            Debug.Log($"Car purchased! Remaining points: {currentPoints - carPrice}. Purchased car index saved: {carIndex}");
         }
         else
         {
