@@ -51,6 +51,7 @@ public class PassengerManager : MonoBehaviour
 
             Debug.Log("¡Has llegado al destino!");
             userManager.RemoveUser();
+            waypoint.IsHeadingDestination(false);
             return true;
         }
 
@@ -61,13 +62,13 @@ public class PassengerManager : MonoBehaviour
     {
         if (destinationSpline == null)
         {
-            Debug.LogError("Spline de destino no asignado.");
+            Debug.Log("Spline de destino no asignado.");
             return;
         }
 
         double randomPercent = Random.Range(0f, 1f);
         Vector3 generatedPoint = destinationSpline.EvaluatePosition(randomPercent);
-
+        Debug.Log($"Spline de destino asignado en {generatedPoint}.");
         if (destinationMarker != null)
         {
             destinationMarker.transform.position = generatedPoint;
@@ -76,15 +77,30 @@ public class PassengerManager : MonoBehaviour
 
         if (destinationParticles != null)
         {
+            Debug.Log("Particulas creadas.");
             destinationParticles.transform.position = generatedPoint;
             destinationParticles.SetActive(true);
         }
 
-        if (waypoint != null) waypoint.SetTarget(destinationMarker.transform);
+        if (waypoint != null)
+        {
+            waypoint.SetTarget(destinationParticles.transform, "PASMAN"); // Actualizar el waypoint al destino
+            waypoint.IsHeadingDestination(true);
+            Debug.Log($"Nuevo destino asignado al waypoint. {destinationParticles.transform.position}");
+        }
+        else
+        {
+            Debug.LogError("Waypoint es null en GenerateDestinationPoint.");
+        }
     }
 
     public GameObject GetTargetPerson()
     {
         return userManager.GetUserInstance();
+    }
+
+    public GameObject GetTargetDestination()
+    {
+        return destinationParticles;
     }
 }

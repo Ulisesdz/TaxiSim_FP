@@ -3,8 +3,8 @@ using UnityEngine;
 public class CarSelectionManager : MonoBehaviour
 {
     public GameObject[] carPrefabs;  // Array of car prefabs (assign in the Inspector)
-    public Vector3 spawnPosition = new Vector3(-52, 2.14f, 25.2f); // Position for spawning the car
-    public Quaternion spawnRotation = Quaternion.Euler(0, 0, 0); // Rotation for the car
+    private Vector3 spawnPosition = new Vector3(-52, 2.14f, 25.2f); // Position for spawning the car
+    private Quaternion spawnRotation = Quaternion.Euler(0, 90, 0); // Rotation for the car
     public Camera mainCamera; // Reference to the main camera
     public Speedometer speedmeter; // Reference to the Speedometer script
 
@@ -25,6 +25,8 @@ public class CarSelectionManager : MonoBehaviour
 
         // Instantiate the selected car prefab
         GameObject selectedCar = Instantiate(carPrefabs[selectedCarIndex], spawnPosition, spawnRotation);
+        selectedCar.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        selectedCar.transform.parent = this.transform;
 
         // Set up camera and speedometer
         if (mainCamera != null)

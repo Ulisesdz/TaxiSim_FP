@@ -11,6 +11,7 @@ public class MissionWaypoint : MonoBehaviour
     public float alturaExtra = 5f;     // Altura adicional
 
     private Transform target;          // Objetivo dinámico
+    private bool isHeadingDestination;
 
     private void Start()
     {
@@ -21,7 +22,11 @@ public class MissionWaypoint : MonoBehaviour
 
     private void Update()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            Debug.Log("El target del marcador es null.");
+            return;
+        }
 
         // Convertir posición 3D a coordenadas de pantalla
         Vector2 pos = Camera.main.WorldToScreenPoint(target.position + offset);
@@ -61,14 +66,30 @@ public class MissionWaypoint : MonoBehaviour
 
         // Mostrar la distancia en metros
         meter.text = ((int)Vector3.Distance(target.position, transform.position)).ToString() + "m";
-        Debug.Log($"Waypoint apunta a las coordenadas del target: {target.position}");
-        Debug.Log($"Waypoint apunta a las coordenadas del target: {transform.position}");
+        //Debug.Log($"Waypoint apunta a las coordenadas del target: {target.position}");
+        //Debug.Log($"Waypoint apunta a las coordenadas del transformada: {transform.position}");
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(Transform newTarget, string manager)
     {
-        target = newTarget;
-        Debug.Log($"Nuevo objetivo establecido: {newTarget?.name}");
+        if (manager == "PASMAN")
+        {
+            Debug.Log($"Marcador activado y apuntando al destino WAYPOINT. {newTarget.transform.position} {manager}");
+            target = newTarget;
+        }
+        else
+        {
+            if (manager == "CARMAN2" && isHeadingDestination)
+            {
+                Debug.Log($"Marcador activado y apuntando al destino WAYPOINT. {newTarget.transform.position} {manager}");
+                target = newTarget;
+            }
+            if (manager == "CARMAN1" && !isHeadingDestination)
+            {
+                Debug.Log($"Marcador activado y apuntando al destino WAYPOINT. {newTarget.transform.position} {manager}");
+                target = newTarget;
+            }
+        }
     }
 
     private void SetupTextAlignment()
@@ -92,6 +113,11 @@ public class MissionWaypoint : MonoBehaviour
     public Transform GetTarget()
     {
         return target;
+    }
+
+    public void IsHeadingDestination(bool isHeading)
+    {
+        isHeadingDestination = isHeading;
     }
 }
 

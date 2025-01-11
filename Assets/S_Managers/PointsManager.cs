@@ -1,15 +1,16 @@
 using System.IO;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PointsManager : MonoBehaviour
 {
-    private int points = 300; // Default starting points
+    private int points = 200; // Default starting points
     private string filePath;
 
     public TextMeshProUGUI pointsText;
+
+    public FileHandler fileHandler; 
 
     private void Awake()
     {
@@ -34,6 +35,8 @@ public class PointsManager : MonoBehaviour
 
         if (points < 0)
         {
+            points = 0;
+            SavePoints();
             Debug.Log($"Has perdido todos los puntos. Fin de la Partida.");
             SceneManager.LoadScene("Main_menu");
         }
@@ -52,11 +55,11 @@ public class PointsManager : MonoBehaviour
         }
     }
 
-    private void SavePoints()
+    public void SavePoints()
     {
         try
         {
-            File.WriteAllText(filePath, points.ToString());
+            fileHandler.Save(filePath, points.ToString());  // Usamos el método de FileHandler
         }
         catch (IOException e)
         {
@@ -68,9 +71,9 @@ public class PointsManager : MonoBehaviour
     {
         try
         {
-            if (File.Exists(filePath))
+            if (fileHandler.Exists(filePath))  // Verificamos si el archivo existe
             {
-                string data = File.ReadAllText(filePath);
+                string data = fileHandler.Load(filePath);  // Usamos el método de FileHandler
                 if (int.TryParse(data, out int loadedPoints))
                 {
                     if (loadedPoints > 0)
@@ -79,8 +82,8 @@ public class PointsManager : MonoBehaviour
                     }
                     else
                     {
-                        points = 300;
-                    }                    
+                        points = 200;
+                    }
                 }
                 else
                 {

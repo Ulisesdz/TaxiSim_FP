@@ -51,7 +51,7 @@ public class CarManager : MonoBehaviour
             // Comprobar si hay un cliente para recoger
             targetPerson = passengerManager.GetTargetPerson();
 
-            if (targetPerson != null)
+            if (targetPerson != null && !isHeadingToDestination)
             {
                 // Desactivar el botón de búsqueda
                 searchButton.interactable = false;
@@ -60,13 +60,6 @@ public class CarManager : MonoBehaviour
                 if (markdownCanvas != null && !markdownCanvas.gameObject.activeSelf)
                 {
                     markdownCanvas.gameObject.SetActive(true);
-                }
-
-                // Actualizar el objetivo del marcador al usuario
-                if (waypoint != null && waypoint.GetTarget() != targetPerson.transform)
-                {
-                    waypoint.SetTarget(targetPerson.transform);
-                    Debug.Log("Marcador activado y apuntando al usuario.");
                 }
 
                 // Comprobar si el taxi está lo suficientemente cerca del cliente
@@ -79,6 +72,13 @@ public class CarManager : MonoBehaviour
                     // Activo el timer
                     timerManager.StartTimer();
                 }
+
+                // Actualizar el objetivo del marcador al usuario
+                if (waypoint != null && waypoint.GetTarget() != targetPerson.transform)
+                {
+                    waypoint.SetTarget(targetPerson.transform, "CARMAN1");
+                    Debug.Log("Marcador activado y apuntando al usuario.");
+                }                
             }
         }
         else
@@ -86,6 +86,16 @@ public class CarManager : MonoBehaviour
             // Verificar la distancia al marcador de destino
             if (destinationMarker != null)
             {
+                // Comprobar si hay un cliente para devolver
+                targetPerson = passengerManager.GetTargetDestination();
+
+                // Actualizar el objetivo del marcador al usuario
+                if (waypoint != null && waypoint.GetTarget() != targetPerson.transform)
+                {
+                    waypoint.SetTarget(targetPerson.transform, "CARMAN2");
+                    Debug.Log($"Marcador activado y apuntando al destino CAR MANAGER. {targetPerson.transform.position}");
+                }
+
                 // Comprobar si el taxi está lo suficientemente cerca del destino
                 bool pickup = passengerManager.TryLeavePassenger(transform);
                 if (pickup == true)

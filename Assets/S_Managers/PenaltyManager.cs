@@ -90,6 +90,7 @@ public class PenaltyManager : MonoBehaviour
     // Método para cancelar la oferta
     public void DeclineRestoreLives()
     {
+        pointsManager.SavePoints();
         SceneManager.LoadScene("Main_menu");
     }
 }

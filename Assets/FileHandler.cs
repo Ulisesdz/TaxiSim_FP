@@ -1,6 +1,7 @@
 using System.IO;
+using UnityEngine;
 
-public class FileHandler : IFileHandler
+public class FileHandler : MonoBehaviour, IFileHandler
 {
     public void Save(string path, string data)
     {

@@ -5,6 +5,7 @@ public class ExitManager : MonoBehaviour
 {
     public GameObject exitPanel;       // Panel que se muestra al pulsar el botón de parar
     public CarController carController; // Referencia al controlador del coche
+    public PointsManager pointsManager;
 
     void Start()
     {
@@ -46,6 +47,7 @@ public class ExitManager : MonoBehaviour
     // Método para ir al menú principal
     public void GoToMainMenu()
     {
+        pointsManager.SavePoints();
         SceneManager.LoadScene("Main_menu"); // Cargar la escena del menú principal
     }
 }
