@@ -36,4 +36,4 @@ Taxi Simulator es un videojuego desarrollado en Unity que combina mecánicas de 
 ## Instalación y configuración  
 1. Clona el repositorio en tu máquina local:  
    ```bash
-   git clone https://github.com/usuario/taxi-simulator.git
+   git clone https://github.com/Ulisesdz/TaxiSim_FP.git
